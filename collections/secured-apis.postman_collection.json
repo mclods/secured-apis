@@ -1,0 +1,147 @@
+{
+  "info": {
+    "_postman_id": "ba431942-465e-4a16-bb33-abfc868d60b7",
+    "name": "secured-apis",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "45002733",
+    "_collection_link": "https://go.postman.co/collection/45002733-ba431942-465e-4a16-bb33-abfc868d60b7?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get CSRF",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "admin",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "admin",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/csrf",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "csrf"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Home Page",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Ingredients",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "admin",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "admin",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "[\r\n    {\r\n        \"id\": \"FLTO\",\r\n        \"name\": \"Flour Tortilla\",\r\n        \"type\": \"WRAP\"\r\n    },\r\n    {\r\n        \"id\": \"COTO\",\r\n        \"name\": \"Corn Tortilla\",\r\n        \"type\": \"WRAP\"\r\n    },\r\n    {\r\n        \"id\": \"GRBF\",\r\n        \"name\": \"Ground Beef\",\r\n        \"type\": \"PROTEIN\"\r\n    },\r\n    {\r\n        \"id\": \"CARN\",\r\n        \"name\": \"Carnitas\",\r\n        \"type\": \"PROTEIN\"\r\n    },\r\n    {\r\n        \"id\": \"TMTO\",\r\n        \"name\": \"Diced Tomatoes\",\r\n        \"type\": \"VEGGIES\"\r\n    },\r\n    {\r\n        \"id\": \"LETC\",\r\n        \"name\": \"Lettuce\",\r\n        \"type\": \"VEGGIES\"\r\n    },\r\n    {\r\n        \"id\": \"CHED\",\r\n        \"name\": \"Cheddar\",\r\n        \"type\": \"CHEESE\"\r\n    },\r\n    {\r\n        \"id\": \"JACK\",\r\n        \"name\": \"Monterrey Jack\",\r\n        \"type\": \"CHEESE\"\r\n    },\r\n    {\r\n        \"id\": \"SLSA\",\r\n        \"name\": \"Salsa\",\r\n        \"type\": \"SAUCE\"\r\n    },\r\n    {\r\n        \"id\": \"SRCR\",\r\n        \"name\": \"Sour Cream\",\r\n        \"type\": \"SAUCE\"\r\n    }\r\n]",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/ingredients/bulk",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "ingredients",
+            "bulk"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Taco",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "admin",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "admin",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Saucy Taco\",\r\n    \"ingredients\": [\r\n        {\r\n            \"id\": \"FLTO\"\r\n        },\r\n        {\r\n            \"id\": \"COTO\"\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/tacos",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "tacos"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
