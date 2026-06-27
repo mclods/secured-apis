@@ -1,4 +1,4 @@
-package com.mclods.secured_apis.dtos.request.update.partial.taco;
+package com.mclods.secured_apis.dtos.request.taco.update.partial;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

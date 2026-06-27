@@ -52,3 +52,13 @@ CREATE TABLE IF NOT EXISTS role_permission(
     permission_id INTEGER REFERENCES permission(id) ON DELETE CASCADE,
     PRIMARY KEY(role_id, permission_id)
 );
+
+
+ALTER TABLE role
+ADD CONSTRAINT uq_role_name
+UNIQUE (name);
+
+
+ALTER TABLE permission
+ADD CONSTRAINT uq_permission_name
+UNIQUE (name);

@@ -1,6 +1,6 @@
 package com.mclods.secured_apis.services.impl;
 
-import com.mclods.secured_apis.dtos.request.create.role.RoleCreateDto;
+import com.mclods.secured_apis.dtos.request.role.create.RoleCreateDto;
 import com.mclods.secured_apis.entities.Role;
 import com.mclods.secured_apis.repositories.RoleRepository;
 import com.mclods.secured_apis.services.PermissionService;
@@ -25,23 +25,36 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role createRole(RoleCreateDto roleCreateDto) {
         var roleToCreate = new Role();
+        var existingRole = findRoleByName(roleCreateDto.getName());
 
-        roleToCreate.setName(roleCreateDto.getName());
-        roleToCreate.setDescription(roleCreateDto.getDescription());
+        Role savedRole = null;
+        if(existingRole.isEmpty()) {
+            roleToCreate.setName(roleCreateDto.getName());
+            roleToCreate.setDescription(roleCreateDto.getDescription());
 
-        if(roleCreateDto.getPermissions() != null) {
-            var rolePermissions = roleCreateDto.getPermissions()
-                    .stream()
-                    .map(pDto -> permissionService.findPermissionById(pDto.getId()))
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .collect(Collectors.toSet());
+            if(roleCreateDto.getPermissions() != null) {
+                var rolePermissions = roleCreateDto.getPermissions()
+                        .stream()
+                        .map(pDto -> {
+                            if(pDto.getId() != null) {
+                                return permissionService.findPermissionById(pDto.getId());
+                            } else {
+                                return permissionService.findPermissionByName(pDto.getName());
+                            }
+                        })
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .collect(Collectors.toSet());
 
-            roleToCreate.setPermissions(rolePermissions);
+                roleToCreate.setPermissions(rolePermissions);
+            }
+
+            savedRole = roleRepository.save(roleToCreate);
+            log.info("Role created with id: {}, name: {}", savedRole.getId(), savedRole.getName());
+        } else {
+            savedRole = existingRole.get();
+            log.info("Role already exists with id: {}, name: {}", savedRole.getId(), savedRole.getName());
         }
-
-        var savedRole = roleRepository.save(roleToCreate);
-        log.info("Role created with id: {}, name: {}", savedRole.getId(), savedRole.getName());
 
         return savedRole;
     }
@@ -65,6 +78,17 @@ public class RoleServiceImpl implements RoleService {
 
         if(foundRole.isEmpty()) {
             log.warn("Role with id: {} not found", id);
+        }
+
+        return foundRole;
+    }
+
+    @Override
+    public Optional<Role> findRoleByName(String name) {
+        var foundRole = roleRepository.findRoleByName(name);
+
+        if(foundRole.isEmpty()) {
+            log.warn("Role with name: {} not found", name);
         }
 
         return foundRole;

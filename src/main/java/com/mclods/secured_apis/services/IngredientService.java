@@ -1,6 +1,6 @@
 package com.mclods.secured_apis.services;
 
-import com.mclods.secured_apis.dtos.request.create.ingredient.IngredientCreateDto;
+import com.mclods.secured_apis.dtos.request.ingredient.create.IngredientCreateDto;
 import com.mclods.secured_apis.entities.Ingredient;
 
 import java.util.List;

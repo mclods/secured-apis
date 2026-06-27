@@ -1,7 +1,7 @@
 package com.mclods.secured_apis.mappers;
 
 import com.mclods.secured_apis.dtos.common.IngredientType;
-import com.mclods.secured_apis.dtos.request.create.ingredient.IngredientCreateDto;
+import com.mclods.secured_apis.dtos.request.ingredient.create.IngredientCreateDto;
 import com.mclods.secured_apis.dtos.response.ingredient.IngredientDto;
 import com.mclods.secured_apis.entities.Ingredient;
 import org.mapstruct.Mapper;

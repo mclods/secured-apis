@@ -1,6 +1,6 @@
 package com.mclods.secured_apis.services.impl;
 
-import com.mclods.secured_apis.dtos.request.create.permission.PermissionCreateDto;
+import com.mclods.secured_apis.dtos.request.permission.create.PermissionCreateDto;
 import com.mclods.secured_apis.entities.Permission;
 import com.mclods.secured_apis.mappers.PermissionMapper;
 import com.mclods.secured_apis.repositories.PermissionRepository;
@@ -26,9 +26,16 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public Permission createPermission(PermissionCreateDto permissionCreateDto) {
         var permissionToCreate = permissionMapper.map(permissionCreateDto);
+        var existingPermission = findPermissionByName(permissionCreateDto.getName());
 
-        var savedPermission = permissionRepository.save(permissionToCreate);
-        log.info("Permission created with id: {}, name: {}", savedPermission.getId(), savedPermission.getName());
+        Permission savedPermission = null;
+        if(existingPermission.isEmpty()) {
+            savedPermission = permissionRepository.save(permissionToCreate);
+            log.info("Permission created with id: {}, name: {}", savedPermission.getId(), savedPermission.getName());
+        } else {
+            savedPermission = existingPermission.get();
+            log.info("Permission already exists with id: {}, name: {}", savedPermission.getId(), savedPermission.getName());
+        }
 
         return savedPermission;
     }
@@ -52,6 +59,17 @@ public class PermissionServiceImpl implements PermissionService {
 
         if(foundPermission.isEmpty()) {
             log.warn("Permission with id: {} not found", id);
+        }
+
+        return foundPermission;
+    }
+
+    @Override
+    public Optional<Permission> findPermissionByName(String name) {
+        var foundPermission = permissionRepository.findPermissionByName(name);
+
+        if(foundPermission.isEmpty()) {
+            log.warn("Permission with name: {} not found", name);
         }
 
         return foundPermission;

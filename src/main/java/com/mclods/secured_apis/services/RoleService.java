@@ -1,6 +1,6 @@
 package com.mclods.secured_apis.services;
 
-import com.mclods.secured_apis.dtos.request.create.role.RoleCreateDto;
+import com.mclods.secured_apis.dtos.request.role.create.RoleCreateDto;
 import com.mclods.secured_apis.entities.Role;
 
 import java.util.List;
@@ -14,6 +14,8 @@ public interface RoleService {
     List<Role> findAllRoles();
 
     Optional<Role> findRoleById(Integer id);
+
+    Optional<Role> findRoleByName(String name);
 
     void deleteRoleById(Integer id);
 }

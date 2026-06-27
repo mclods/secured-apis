@@ -1,8 +1,8 @@
 package com.mclods.secured_apis.services.impl;
 
-import com.mclods.secured_apis.dtos.request.create.taco.TacoCreateDto;
-import com.mclods.secured_apis.dtos.request.update.full.taco.TacoFullUpdateDto;
-import com.mclods.secured_apis.dtos.request.update.partial.taco.TacoPartialUpdateDto;
+import com.mclods.secured_apis.dtos.request.taco.create.TacoCreateDto;
+import com.mclods.secured_apis.dtos.request.taco.update.full.TacoFullUpdateDto;
+import com.mclods.secured_apis.dtos.request.taco.update.partial.TacoPartialUpdateDto;
 import com.mclods.secured_apis.entities.Taco;
 import com.mclods.secured_apis.exceptions.TacoNotFoundException;
 import com.mclods.secured_apis.repositories.TacoRepository;
