@@ -19,3 +19,6 @@ spring:
     hibernate:
       ddl-auto: none
     defer-datasource-initialization: true
+  jwt:
+    secret: MyLittleSecretKeyForJwtAuthentication
+    expirationMS: 1800000

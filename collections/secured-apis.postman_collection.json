@@ -8,37 +8,291 @@
   },
   "item": [
     {
-      "name": "Get CSRF",
-      "request": {
-        "auth": {
-          "type": "basic",
-          "basic": [
+      "name": "Installation",
+      "item": [
+        {
+          "name": "1. Installation User Login",
+          "event": [
             {
-              "key": "password",
-              "value": "admin",
-              "type": "string"
-            },
-            {
-              "key": "username",
-              "value": "admin",
-              "type": "string"
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const token = pm.response.text();\r",
+                  "pm.environment.set(\"InstallationUserJWTToken\", token);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
             }
-          ]
-        },
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "localhost:8080/csrf",
-          "host": [
-            "localhost"
           ],
-          "port": "8080",
-          "path": [
-            "csrf"
-          ]
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BaseUrl}}/auth/login",
+              "host": [
+                "{{BaseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. Create Permissions",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{InstallationUserJWTToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "[\r\n    {\r\n        \"name\": \"CREATE_USER\",\r\n        \"description\": \"Ability to create user\"\r\n    },\r\n    {\r\n        \"name\": \"READ_USER\",\r\n        \"description\": \"Ability to read user\"\r\n    },\r\n    {\r\n        \"name\": \"CHANGE_USER_PASSWORD\",\r\n        \"description\": \"Ability to change user password\"\r\n    },\r\n    {\r\n        \"name\": \"DELETE_USER\",\r\n        \"description\": \"Ability to delete user\"\r\n    },\r\n    {\r\n        \"name\": \"CREATE_PERMISSION\",\r\n        \"description\": \"Ability to create permission\"\r\n    },\r\n    {\r\n        \"name\": \"READ_PERMISSION\",\r\n        \"description\": \"Ability to read permission\"\r\n    },\r\n    {\r\n        \"name\": \"DELETE_PERMISSION\",\r\n        \"description\": \"Ability to delete permission\"\r\n    },\r\n    {\r\n        \"name\": \"CREATE_ROLE\",\r\n        \"description\": \"Ability to create role\"\r\n    },\r\n    {\r\n        \"name\": \"READ_ROLE\",\r\n        \"description\": \"Ability to read role\"\r\n    },\r\n    {\r\n        \"name\": \"DELETE_ROLE\",\r\n        \"description\": \"Ability to delete role\"\r\n    },\r\n    {\r\n        \"name\": \"CREATE_TACO\",\r\n        \"description\": \"Ability to create taco\"\r\n    },\r\n    {\r\n        \"name\": \"READ_TACO\",\r\n        \"description\": \"Ability to read taco\"\r\n    },\r\n    {\r\n        \"name\": \"UPDATE_TACO\",\r\n        \"description\": \"Ability to update taco\"\r\n    },\r\n    {\r\n        \"name\": \"DELETE_TACO\",\r\n        \"description\": \"Ability to delete taco\"\r\n    },\r\n    {\r\n        \"name\": \"CREATE_INGREDIENT\",\r\n        \"description\": \"Ability to create ingredient\"\r\n    },\r\n    {\r\n        \"name\": \"READ_INGREDIENT\",\r\n        \"description\": \"Ability to read ingredient\"\r\n    },\r\n    {\r\n        \"name\": \"DELETE_INGREDIENT\",\r\n        \"description\": \"Ability to delete ingredient\"\r\n    }\r\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BaseUrl}}/permissions/bulk",
+              "host": [
+                "{{BaseUrl}}"
+              ],
+              "path": [
+                "permissions",
+                "bulk"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. Create Roles",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{InstallationUserJWTToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "[\r\n    {\r\n        \"name\": \"ROLE_INSTALLATION_USER\",\r\n        \"description\": \"Installation User Role\",\r\n        \"permissions\": [\r\n            {\r\n                \"name\": \"CREATE_USER\"\r\n            },\r\n            {\r\n                \"name\": \"READ_USER\"\r\n            },\r\n            {\r\n                \"name\": \"CREATE_PERMISSION\"\r\n            },\r\n            {\r\n                \"name\": \"READ_PERMISSION\"\r\n            },\r\n            {\r\n                \"name\": \"CREATE_ROLE\"\r\n            },\r\n            {\r\n                \"name\": \"READ_ROLE\"\r\n            }\r\n        ]\r\n    },\r\n    {\r\n        \"name\": \"ROLE_STORE_MANAGER\",\r\n        \"description\": \"Store Manager Role\",\r\n        \"permissions\": [\r\n            {\r\n                \"name\": \"CREATE_USER\"\r\n            },\r\n            {\r\n                \"name\": \"READ_USER\"\r\n            },\r\n            {\r\n                \"name\": \"DELETE_USER\"\r\n            },\r\n            {\r\n                \"name\": \"CREATE_PERMISSION\"\r\n            },\r\n            {\r\n                \"name\": \"READ_PERMISSION\"\r\n            },\r\n            {\r\n                \"name\": \"DELETE_PERMISSION\"\r\n            },\r\n            {\r\n                \"name\": \"CREATE_ROLE\"\r\n            },\r\n            {\r\n                \"name\": \"READ_ROLE\"\r\n            },\r\n            {\r\n                \"name\": \"DELETE_ROLE\"\r\n            }\r\n        ]\r\n    },\r\n    {\r\n        \"name\": \"ROLE_CHEF\",\r\n        \"description\": \"Chef Role\",\r\n        \"permissions\": [\r\n            {\r\n                \"name\": \"CREATE_TACO\"\r\n            },\r\n            {\r\n                \"name\": \"READ_TACO\"\r\n            },\r\n            {\r\n                \"name\": \"UPDATE_TACO\"\r\n            },\r\n            {\r\n                \"name\": \"DELETE_TACO\"\r\n            },\r\n            {\r\n                \"name\": \"CREATE_INGREDIENT\"\r\n            },\r\n            {\r\n                \"name\": \"READ_INGREDIENT\"\r\n            },\r\n            {\r\n                \"name\": \"DELETE_INGREDIENT\"\r\n            }\r\n        ]\r\n    }\r\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BaseUrl}}/roles/bulk",
+              "host": [
+                "{{BaseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "bulk"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. Create Store Manager",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{InstallationUserJWTToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"tim\",\r\n    \"password\": \"tim23@tacostore\",\r\n    \"roles\": [\r\n        {\r\n            \"name\": \"ROLE_STORE_MANAGER\"\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BaseUrl}}/users",
+              "host": [
+                "{{BaseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5. Store Manager Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const token = pm.response.text();\r",
+                  "pm.environment.set(\"StoreManagerJWTToken\", token);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"tim\",\r\n    \"password\": \"tim23@tacostore\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BaseUrl}}/auth/login",
+              "host": [
+                "{{BaseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "6. Get Users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const users = pm.response.json();\r",
+                  "\r",
+                  "const installationUser = users.find(user =>\r",
+                  "    user.roles.some(role => role.name === \"ROLE_INSTALLATION_USER\")\r",
+                  ");\r",
+                  "\r",
+                  "if (installationUser) {\r",
+                  "    pm.environment.set(\"InstallationUserId\", installationUser.id);\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{StoreManagerJWTToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{BaseUrl}}/users",
+              "host": [
+                "{{BaseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "7. Delete Installation User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{StoreManagerJWTToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{BaseUrl}}/users/{{InstallationUserId}}",
+              "host": [
+                "{{BaseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{InstallationUserId}}"
+              ]
+            }
+          },
+          "response": []
         }
-      },
-      "response": []
+      ],
+      "description": "APIs needed to setup the app. Must be run after new installation."
     },
     {
       "name": "Home Page",
@@ -49,11 +303,114 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "localhost:8080",
+          "raw": "{{BaseUrl}}",
           "host": [
-            "localhost"
+            "{{BaseUrl}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get CSRF",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{StoreManagerJWTToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseUrl}}/csrf",
+          "host": [
+            "{{BaseUrl}}"
           ],
-          "port": "8080"
+          "path": [
+            "csrf"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Chef",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{StoreManagerJWTToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"benny\",\r\n    \"password\": \"benny23@cameleon\",\r\n    \"roles\": [\r\n        {\r\n            \"name\": \"ROLE_CHEF\"\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseUrl}}/users",
+          "host": [
+            "{{BaseUrl}}"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Chef Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const token = pm.response.text();\r",
+              "pm.environment.set(\"ChefJWTToken\", token);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"benny\",\r\n    \"password\": \"benny23@cameleon\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseUrl}}/auth/login",
+          "host": [
+            "{{BaseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
         }
       },
       "response": []
@@ -62,16 +419,11 @@
       "name": "Create Ingredients",
       "request": {
         "auth": {
-          "type": "basic",
-          "basic": [
+          "type": "bearer",
+          "bearer": [
             {
-              "key": "password",
-              "value": "admin",
-              "type": "string"
-            },
-            {
-              "key": "username",
-              "value": "admin",
+              "key": "token",
+              "value": "{{ChefJWTToken}}",
               "type": "string"
             }
           ]
@@ -88,11 +440,10 @@
           }
         },
         "url": {
-          "raw": "localhost:8080/ingredients/bulk",
+          "raw": "{{BaseUrl}}/ingredients/bulk",
           "host": [
-            "localhost"
+            "{{BaseUrl}}"
           ],
-          "port": "8080",
           "path": [
             "ingredients",
             "bulk"
@@ -102,19 +453,69 @@
       "response": []
     },
     {
+      "name": "Get Ingredients",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{ChefJWTToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseUrl}}/ingredients",
+          "host": [
+            "{{BaseUrl}}"
+          ],
+          "path": [
+            "ingredients"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Ingredient",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{ChefJWTToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{BaseUrl}}/ingredients/FLTO",
+          "host": [
+            "{{BaseUrl}}"
+          ],
+          "path": [
+            "ingredients",
+            "FLTO"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "Create Taco",
       "request": {
         "auth": {
-          "type": "basic",
-          "basic": [
+          "type": "bearer",
+          "bearer": [
             {
-              "key": "password",
-              "value": "admin",
-              "type": "string"
-            },
-            {
-              "key": "username",
-              "value": "admin",
+              "key": "token",
+              "value": "{{ChefJWTToken}}",
               "type": "string"
             }
           ]
@@ -131,13 +532,67 @@
           }
         },
         "url": {
-          "raw": "localhost:8080/tacos",
+          "raw": "{{BaseUrl}}/tacos",
           "host": [
-            "localhost"
+            "{{BaseUrl}}"
           ],
-          "port": "8080",
           "path": [
             "tacos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Tacos",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{ChefJWTToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseUrl}}/tacos",
+          "host": [
+            "{{BaseUrl}}"
+          ],
+          "path": [
+            "tacos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Taco",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{ChefJWTToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{BaseUrl}}/tacos/1",
+          "host": [
+            "{{BaseUrl}}"
+          ],
+          "path": [
+            "tacos",
+            "1"
           ]
         }
       },

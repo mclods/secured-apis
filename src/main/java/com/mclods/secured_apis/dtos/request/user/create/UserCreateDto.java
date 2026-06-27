@@ -1,4 +1,4 @@
-package com.mclods.secured_apis.dtos.request.create.user;
+package com.mclods.secured_apis.dtos.request.user.create;
 
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

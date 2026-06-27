@@ -1,4 +1,4 @@
-package com.mclods.secured_apis.dtos.request.update.full.taco;
+package com.mclods.secured_apis.dtos.request.taco.update.partial;
 
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TacoIngredientsFullUpdateDto {
+public class TacoIngredientsPartialUpdateDto {
     @Pattern(
             regexp = "^[A-Z]{4}$",
             message = "Ingredient id must contain exactly 4 letters"

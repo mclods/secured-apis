@@ -1,4 +1,4 @@
-package com.mclods.secured_apis.dtos.request.create.ingredient;
+package com.mclods.secured_apis.dtos.request.ingredient.create;
 
 import com.mclods.secured_apis.dtos.common.IngredientType;
 import jakarta.validation.constraints.Pattern;

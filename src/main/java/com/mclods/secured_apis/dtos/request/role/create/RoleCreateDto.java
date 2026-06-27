@@ -1,4 +1,4 @@
-package com.mclods.secured_apis.dtos.request.create.permission;
+package com.mclods.secured_apis.dtos.request.role.create;
 
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -6,13 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PermissionCreateDto {
-    @Size(max = 50, message = "Permission Name cannot exceed 50 characters")
+public class RoleCreateDto {
+    @Size(max = 50, message = "Role Name cannot exceed 50 characters")
     private String name;
 
     private String description;
+
+    private Set<RolePermissionsCreateDto> permissions;
 }

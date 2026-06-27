@@ -1,6 +1,6 @@
 package com.mclods.secured_apis.services.impl;
 
-import com.mclods.secured_apis.dtos.request.create.ingredient.IngredientCreateDto;
+import com.mclods.secured_apis.dtos.request.ingredient.create.IngredientCreateDto;
 import com.mclods.secured_apis.entities.Ingredient;
 import com.mclods.secured_apis.mappers.IngredientMapper;
 import com.mclods.secured_apis.repositories.IngredientRepository;

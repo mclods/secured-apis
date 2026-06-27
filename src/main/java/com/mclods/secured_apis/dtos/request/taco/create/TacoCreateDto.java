@@ -1,4 +1,4 @@
-package com.mclods.secured_apis.dtos.request.update.full.taco;
+package com.mclods.secured_apis.dtos.request.taco.create;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -12,9 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TacoFullUpdateDto {
-    Integer id;
-
+public class TacoCreateDto {
     @Size(max = 50, message = "Taco name cannot exceed 50 characters")
     @NotBlank(message = "Taco Name cannot be blank")
     private String name;
@@ -22,5 +20,5 @@ public class TacoFullUpdateDto {
     private LocalDateTime creationDate;
 
     @Size(min = 1, message = "Taco should have at least one ingredient")
-    private Set<TacoIngredientsFullUpdateDto> ingredients;
+    private Set<TacoIngredientsCreateDto> ingredients;
 }

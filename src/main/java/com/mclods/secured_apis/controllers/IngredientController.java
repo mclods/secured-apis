@@ -1,11 +1,12 @@
 package com.mclods.secured_apis.controllers;
 
-import com.mclods.secured_apis.dtos.request.create.ingredient.IngredientCreateDto;
+import com.mclods.secured_apis.dtos.request.ingredient.create.IngredientCreateDto;
 import com.mclods.secured_apis.dtos.response.ingredient.IngredientDto;
 import com.mclods.secured_apis.mappers.IngredientMapper;
 import com.mclods.secured_apis.services.IngredientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,15 +23,17 @@ public class IngredientController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('READ_INGREDIENT')")
     public ResponseEntity<IngredientDto> findIngredientById(@PathVariable String id) {
         var ingredient = ingredientService.findIngredientById(id);
 
         return ingredient.map(val -> new ResponseEntity<>(ingredientMapper.map(val), HttpStatus.OK))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('READ_INGREDIENT')")
     public List<IngredientDto> findAllIngredients() {
         return ingredientService.findAllIngredients()
                 .stream()
@@ -40,12 +43,14 @@ public class IngredientController {
 
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('CREATE_INGREDIENT')")
     public IngredientDto createIngredient(@RequestBody IngredientCreateDto ingredientCreateDto) {
         return ingredientMapper.map(ingredientService.createIngredient(ingredientCreateDto));
     }
 
     @PostMapping(value = "bulk", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('CREATE_INGREDIENT')")
     public List<IngredientDto> createIngredients(@RequestBody List<IngredientCreateDto> ingredientCreateDtoList) {
         return ingredientService.createIngredients(ingredientCreateDtoList)
                 .stream()
@@ -55,6 +60,7 @@ public class IngredientController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('DELETE_INGREDIENT')")
     public void deleteIngredientById(@PathVariable String id) {
         ingredientService.deleteIngredientById(id);
     }
